@@ -10,9 +10,9 @@ import netCDF4 as netcdf4
 from pathlib import Path
 
 import olr_handling as olr
-import mjoindices.u200_handling as u200
-import mjoindices.u850_handling as u850
-import mjoindices.sst_handling as sst
+import u200_handling as u200
+import u850_handling as u850
+import sst_handling as sst
 
 from data_to_dataframe import *
 from preanalysis import *
@@ -197,33 +197,34 @@ df.to_csv(psctxtfile, index=False, float_format="%.5f")
 exit()
 #**********************#
 
-#******  Delete Average  ******#
-shorter_olr = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_path, day_start, day_end)
-anomaly_olr = olr.get_doys_in_span(shorter_olr, ncfile_olr_path, day_start, day_end)
-interpolated_olr = olr.interpolate_spatial_grid_to_original(anomaly_olr)
-print("--- %s seconds for one span ---" % (time.time() - start_time))
+# #******  Delete Average  ******#
+# shorter_olr = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_path, day_start, day_end)
+# anomaly_olr = olr.get_doys_in_span(shorter_olr, ncfile_olr_path, day_start, day_end)
+# interpolated_olr = olr.interpolate_spatial_grid_to_original(anomaly_olr)
+# print("--- %s seconds for one span ---" % (time.time() - start_time))
 
-shorter_u200 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_path, day_start, day_end)
-anomaly_u200 = u200.get_doys_in_span(shorter_u200, ncfile_u200_path, day_start, day_end)
-interpolated_u200 = u200.interpolate_spatial_grid_to_original(anomaly_u200)
+# shorter_u200 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_path, day_start, day_end)
+# anomaly_u200 = u200.get_doys_in_span(shorter_u200, ncfile_u200_path, day_start, day_end)
+# interpolated_u200 = u200.interpolate_spatial_grid_to_original(anomaly_u200)
 
-shorter_u850 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_path, day_start, day_end)
-anomaly_u850 = u850.get_doys_in_span(shorter_u850, ncfile_u850_path, day_start, day_end)
-interpolated_u850 = u850.interpolate_spatial_grid_to_original(anomaly_u850)
-#******************************#
-print(interpolated_olr.olr)
-print(type(interpolated_olr.olr))
-#******  Find PC  ******#
-#solver = MultivariateEof([anomaly_olr.olr, anomaly_u200.u200, anomaly_u850.u850])
-solver = MultivariateEof([interpolated_olr.olr, interpolated_u200.u200, interpolated_u850.u850])
-pcs = np.squeeze(solver.pcs(npcs=2, pcscaling=1))
+# shorter_u850 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_path, day_start, day_end)
+# anomaly_u850 = u850.get_doys_in_span(shorter_u850, ncfile_u850_path, day_start, day_end)
+# interpolated_u850 = u850.interpolate_spatial_grid_to_original(anomaly_u850)
+# #******************************#
+# print(interpolated_olr.olr)
+# print(type(interpolated_olr.olr))
+# #******  Find PC  ******#
+# #solver = MultivariateEof([anomaly_olr.olr, anomaly_u200.u200, anomaly_u850.u850])
+# solver = MultivariateEof([interpolated_olr.olr, interpolated_u200.u200, interpolated_u850.u850])
+# pcs = np.squeeze(solver.pcs(npcs=2, pcscaling=1))
 
-pc1, pc2 = [], []
-for pc in pcs:
-    pc1.append(pc[0])
-    pc2.append(pc[1]) 
-dates = np.arange(day_start, day_end + np.timedelta64(1, 'D'), dtype='datetime64[D]')
-df = pd.DataFrame({"Date": dates, "PC1": pc1, "PC2": pc2})
-df.to_csv(pctxtfile, index=False, float_format="%.5f")
+# pc1, pc2 = [], []
+# for pc in pcs:
+#     pc1.append(pc[0])
+#     pc2.append(pc[1]) 
+# dates = np.arange(day_start, day_end + np.timedelta64(1, 'D'), dtype='datetime64[D]')
+# df = pd.DataFrame({"Date": dates, "PC1": pc1, "PC2": pc2})
+# df.to_csv(pctxtfile, index=False, float_format="%.5f")
+
 #**********************#
 print("--- %s seconds totally ---" % (time.time() - start_time))

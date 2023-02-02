@@ -1,8 +1,11 @@
+import sys
+sys.path.append("../../site-packages/mjoindices/")
+
 import numpy as np
 import pandas as pd
 from pathlib import Path
 import netCDF4 as netcdf4
-import mjoindices.sst_handling as sst
+import sst_handling as sst
 
 #TODO take spatial_elements_amount from olr/sst data; put defs into file
 def make_time_for_dataset(time, spatial_elements_amount):
