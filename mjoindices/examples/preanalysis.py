@@ -21,7 +21,6 @@ def interpolate_sst(dataFrame):
 
 #def get_new_dataframe(filename: Path, field_name, df_new_field_120_data_path):
 def get_new_dataframe(filename: Path, field_name):
- #TODO change filenames depends on field_name
     sst_field_df_grouped_path = f"example_data/dataframes/day_sst_grouped_days_{field_name}.txt"
     df_coefs_month_path = f"example_data/dataframes/df_coefs_month_{field_name}.txt"
     df_interpolaed_coefs_path = f"example_data/dataframes/df_interpolaed_coefs_{field_name}.txt"
