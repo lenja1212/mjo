@@ -20,7 +20,7 @@ def interpolate_sst(dataFrame):
     return interpolated_sst
 
 #def get_new_dataframe(filename: Path, field_name, df_new_field_120_data_path):
-def get_new_dataframe(filename: Path, field_name):
+def get_new_dataframe(filename: Path, field_name, df_new_field_120_data_path = False):
     sst_field_df_grouped_path = f"example_data/dataframes/day_sst_grouped_days_{field_name}.txt"
     df_coefs_month_path = f"example_data/dataframes/df_coefs_month_{field_name}.txt"
     df_interpolaed_coefs_path = f"example_data/dataframes/df_interpolaed_coefs_{field_name}.txt"
@@ -39,20 +39,26 @@ def get_new_dataframe(filename: Path, field_name):
     #find_coefs_lin_regression(sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_coefs_month_path, df_interpolaed_coefs_path) #nsst 0-3 
     #find_coefs_lin_regression(sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_coefs_month_path, df_interpolaed_coefs_path) #nsst 4
     #make_new_field_data(sst_field_df_grouped_path, df_interpolaed_coefs_path, field_name, df_new_field_path) #nsst 0-3 
-    
-    #substract_120_average(df_new_field_120_data_path, sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_substracted_field_path)# NOsst
-    #substract_120_average(df_new_field_120_data_path, df_interpolaed_coefs_path, field_name, days, spatial_elements_amount, df_substracted_field_path)#nsst 4
-    #substract_120_average(df_new_field_120_data_path, df_new_field_path, field_name, days, spatial_elements_amount, df_substracted_field_path)
-   # #substract_120_average3(df_new_field_120_data_path, df_new_field_path, field_name, days, spatial_elements_amount, df_substracted_field_path)
-   
-    #spat_points_to_days(df_interpolaed_coefs_path, field_name, days, spatial_elements_amount, df_new_field_data_path) # nsst 4
-   # spat_points_to_days(df_new_field_path, field_name, days, spatial_elements_amount, df_new_field_data_path) #nsst 0-3 
-    spat_points_to_days(sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_new_field_data_path) # opposite of group_dataframe_by_days
-    #spat_points_to_days(df_substracted_field_path, field_name, days, spatial_elements_amount, df_new_field_data_path)  # 120
-    
+
+    if(df_new_field_120_data_path):
+        print("120 \n")
+        substract_120_average(df_new_field_120_data_path, sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_substracted_field_path)# NOsst
+        #substract_120_average(df_new_field_120_data_path, df_interpolaed_coefs_path, field_name, days, spatial_elements_amount, df_substracted_field_path)#nsst 4
+        #substract_120_average(df_new_field_120_data_path, df_new_field_path, field_name, days, spatial_elements_amount, df_substracted_field_path)
+        #substract_120_average3(df_new_field_120_data_path, df_new_field_path, field_name, days, spatial_elements_amount, df_substracted_field_path)
+        
+        spat_points_to_days(df_substracted_field_path, field_name, days, spatial_elements_amount, df_new_field_data_path)  # 120
+    else:
+        spat_points_to_days(sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_new_field_data_path) # opposite of group_dataframe_by_days
+        #spat_points_to_days(df_interpolaed_coefs_path, field_name, days, spatial_elements_amount, df_new_field_data_path) # nsst 4
+        #spat_points_to_days(df_new_field_path, field_name, days, spatial_elements_amount, df_new_field_data_path) #nsst 0-3 
+
     return make_array_for_eof(df_new_field_data_path, field_name, days, spatial_elements_amount, df_new_field_data_arrayed_path) # nsst 0-4 NOstt
     #return make_array_for_eof(sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_new_field_data_arrayed_path) # nsst 0-4
     #return make_array_for_eof(filename, field_name, days, spatial_elements_amount, df_new_field_data_arrayed_path) # Nothing 
+
+
+
 
 def save_new_dataframe_120(filename: Path, field_name):
     sst_field_df_grouped_path = f"example_data/dataframes/day_sst_grouped_days_120_{field_name}.txt"
@@ -67,8 +73,6 @@ def save_new_dataframe_120(filename: Path, field_name):
     print(days, spatial_elements_amount)
     
     group_dataframe_by_days(df, field_name, days, spatial_elements_amount, sst_field_df_grouped_path) #nsst 0-4
-    #find_coefs_lin_regression(sst_field_df_grouped_path, field_name, days, spatial_elements_amount, df_coefs_month_path, df_interpolaed_coefs_path) #nsst 0-4
-    #make_new_field_data(sst_field_df_grouped_path, df_interpolaed_coefs_path, field_name, df_new_field_path) #nsst 0-3
     #return df_new_field_path #nsst 0-3
     #return df_interpolaed_coefs_path #nsst 4
     #return filename #NOsst
@@ -272,7 +276,7 @@ def substract_120_average(df_new_field_120_data_path, df_new_field_path, field_n
             else:
                 print("average = 0")
                 average = 0
-            #if j == 0 or j == spatial_elements_amount-1:
+            #if j%100 == 0 or j == spatial_elements_amount-1:
                 #print("conc_arr[i:i+120]: ", conc_arr[i:i+120])
                 #print("field_time_120[i:i+120]", field_time_120[i:i+120]
                 #print("non_zero: ", non_zero) 
