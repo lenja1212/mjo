@@ -254,13 +254,13 @@ def substract_120_average(df_new_field_120_data_path, df_new_field_path, field_n
     df = pd.read_csv(df_new_field_120_data_path)
     df90 = pd.read_csv(df_new_field_path)
 
-    field_arr = df[field_name].values
+    field_arr_120 = df[field_name].values
     field_time_120 = df['day'].values
     field_arr90 = df90[field_name].values
-    field_time = df90["day"].values
+    field_time90 = df90["day"].values
     field_sst = df90["sst"].values
     
-    split_field_arr = np.array_split(field_arr, spatial_elements_amount)
+    split_field_arr120 = np.array_split(field_arr_120, spatial_elements_amount)
     split_field_arr90 = np.array_split(field_arr90, spatial_elements_amount)
 
     days_aver = []
@@ -268,7 +268,7 @@ def substract_120_average(df_new_field_120_data_path, df_new_field_path, field_n
         if j%100 == 0 or j == spatial_elements_amount-1:
             print("j: ", j)
         days_substracted_aver = []
-        conc_arr = np.concatenate((split_field_arr[j], split_field_arr90[j]))
+        conc_arr = np.concatenate((split_field_arr120[j], split_field_arr90[j]))
         for i in range(days):
             non_zero = np.count_nonzero(conc_arr[i:i+120])
             if non_zero != 0:
@@ -287,7 +287,7 @@ def substract_120_average(df_new_field_120_data_path, df_new_field_path, field_n
             days_substracted_aver.append(split_field_arr90[j][i] - average)
         days_aver.append(days_substracted_aver)
     #data = {"day": field_time, "sst": field_sst, f"{field_name}_old:": np.array(split_field_arr90).flatten(), field_name: np.array(split_field_arr90).flatten()}
-    data = {"day": field_time, "sst": field_sst, f"{field_name}_old:": np.array(split_field_arr90).flatten(), field_name: np.array(days_aver).flatten()}
+    data = {"day": field_time90, "sst": field_sst, f"{field_name}_old:": np.array(split_field_arr90).flatten(), field_name: np.array(days_aver).flatten()}
     df_out_compare = pd.DataFrame(data)
     df_out_compare.to_csv(df_substracted_field_path)
     

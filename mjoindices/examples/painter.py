@@ -45,6 +45,7 @@ def drawPc(pc_text_file: Path, pc_png_file: Path, inverse1 = 1, inverse2 = 1):
     feb_arr_pc2 = pc2[31:59]
     mar_arr_pc2 = pc2[59:90]
     text31 = np.arange(1, 32, 1, dtype=int)
+    len_mar = 28
     text28 = np.arange(1, 29, 1, dtype=int)
 
     # print(form_data(jan_arr_pc1, jan_arr_pc2))
@@ -57,7 +58,7 @@ def drawPc(pc_text_file: Path, pc_png_file: Path, inverse1 = 1, inverse2 = 1):
     # plt.annotate("START", (jan_arr_pc1[0], jan_arr_pc2[0] + 0.2), fontsize=8)
     # for i in range(1,len(text31)):
     #     plt.annotate(text31[i], (jan_arr_pc1[i], jan_arr_pc2[i] + 0.2), fontsize=5)
-    for i in range(0,len(text31)-1):  
+    for i in range(0, len_mar-1): #len(text31)-1):  
         plt.annotate(text31[i], (mar_arr_pc1[i], mar_arr_pc2[i] + 0.2), fontsize=5)
     plt.annotate("FINISH", (mar_arr_pc1[-1], mar_arr_pc2[-1] + 0.2), fontsize=8)
     for i in range(len(text28)):
@@ -82,7 +83,7 @@ def drawPc(pc_text_file: Path, pc_png_file: Path, inverse1 = 1, inverse2 = 1):
     rotated_data = rotate_vector(form_data(mar_arr_pc1, mar_arr_pc2), 0)
     plt.plot(mar_arr_pc1, mar_arr_pc2, '-o', color='blue', ms=2, label='mar')
 
-    for i in range(0,len(text31)-1):  
+    for i in range(0,len_mar-1):#len(text31)-1):  
         plt.annotate(text31[i], (rotated_data[:,0][i], rotated_data[:,1][i] + 0.2), fontsize=5)
     plt.annotate("FINISH", (mar_arr_pc1[-1], mar_arr_pc2[-1] + 0.2), fontsize=8)
     plt.legend()

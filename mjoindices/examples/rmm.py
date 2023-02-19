@@ -35,25 +35,27 @@ day_end_120 = day_start - np.timedelta64(1, 'D')
 
 
 #******  If 120 days before forecast are needed aver2 aver3  *******#
-shorter_olr_120 = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_120_path, day_start_120, day_end_120, plav=False)
-shorter_u200_120 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_120_path, day_start_120, day_end_120, plav=False)
-shorter_u850_120 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_120_path, day_start_120, day_end_120, plav=False)
-shorter_sst_120 = sst.load_noaa_interpolated_sst_netcdf4(ncfile_sst_path, day_start_120, day_end_120)
+# shorter_olr_120 = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_120_path, day_start_120, day_end_120, plav=False)
+# shorter_u200_120 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_120_path, day_start_120, day_end_120, plav=False)
+# shorter_u850_120 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_120_path, day_start_120, day_end_120, plav=False)
+# shorter_sst_120 = sst.load_noaa_interpolated_sst_netcdf4(ncfile_sst_path, day_start_120, day_end_120)
 
-interpolated_olr_120 = olr.interpolate_spatial_grid_to_original(shorter_olr_120)
-interpolated_u200_120 = u200.interpolate_spatial_grid_to_original(shorter_u200_120)
-interpolated_u850_120 = u850.interpolate_spatial_grid_to_original(shorter_u850_120)
-interpolated_sst_120 = sst.interpolate_spatial_grid_to_original(shorter_sst_120)
+# interpolated_olr_120 = olr.interpolate_spatial_grid_to_original(shorter_olr_120)
+# interpolated_u200_120 = u200.interpolate_spatial_grid_to_original(shorter_u200_120)
+# interpolated_u850_120 = u850.interpolate_spatial_grid_to_original(shorter_u850_120)
+# interpolated_sst_120 = sst.interpolate_spatial_grid_to_original(shorter_sst_120)
 
-save_sst_olr_to_df(day_start_120, day_end_120, interpolated_olr_120, interpolated_sst_120, olr_sst_120_df_file)
-save_sst_u200_to_df(day_start_120, day_end_120, interpolated_u200_120, interpolated_sst_120, u200_sst_120_df_file)
-save_sst_u850_to_df(day_start_120, day_end_120, interpolated_u850_120, interpolated_sst_120, u850_sst_120_df_file)
+# save_sst_olr_to_df(day_start_120, day_end_120, interpolated_olr_120, interpolated_sst_120, olr_sst_120_df_file)
+# save_sst_u200_to_df(day_start_120, day_end_120, interpolated_u200_120, interpolated_sst_120, u200_sst_120_df_file)
+# save_sst_u850_to_df(day_start_120, day_end_120, interpolated_u850_120, interpolated_sst_120, u850_sst_120_df_file)
 
-olr_120_path = save_new_dataframe_120(olr_sst_120_df_file, "olr")
-u200_120_path = save_new_dataframe_120(u200_sst_120_df_file, "u200")
-u850_120_path = save_new_dataframe_120(u850_sst_120_df_file, "u850")
+# olr_120_path = save_new_dataframe_120(olr_sst_120_df_file, "olr")
+# u200_120_path = save_new_dataframe_120(u200_sst_120_df_file, "u200")
+# u850_120_path = save_new_dataframe_120(u850_sst_120_df_file, "u850")
 #exit()
 #***************************************************************************#
+day_start = np.datetime64("2015-01-01") # runmean
+day_end = day_start + np.timedelta64(86, 'D') #runmean
 
 shorter_olr = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_path, day_start, day_end, plav=False) #True
 shorter_u200 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_path, day_start, day_end, plav=False)
@@ -71,14 +73,14 @@ save_sst_u200_to_df(day_start, day_end, interpolated_u200, interpolated_sst, u20
 save_sst_u850_to_df(day_start, day_end, interpolated_u850, interpolated_sst, u850_sst_df_file)
 #*********** If 120 days before forecast are needed aver2 aver3 **************#
 #aver 2, 3
-df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr", olr_120_path)
-df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200", u200_120_path)
-df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850", u850_120_path)
+# df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr", olr_120_path)
+# df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200", u200_120_path)
+# df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850", u850_120_path)
 
 #aver 
-# df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr")
-# df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200")
-# df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850")
+df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr")
+df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200")
+df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850")
 #****** Calculate normalization factor  *******#
 
 variance_olr = np.std(df_sst_olr)

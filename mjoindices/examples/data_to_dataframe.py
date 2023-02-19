@@ -45,6 +45,7 @@ def save_sst_olr_to_df(day_start, day_end, olr_datafield, sst_datafield, olr_sst
     time_restricted = sst_datafield.time.flatten()
     sst_restricted_arr = sst_fill_nans(sst_restricted)
     time_restricted_long = make_time_for_dataset(time_restricted, spatial_elements_amount)
+    print(len(olr_datafield.olr.flatten()), len(sst_restricted_arr), len(time_restricted_long))
     df_data = {"day": time_restricted_long, "sst": sst_restricted_arr, "olr": olr_datafield.olr.flatten()}
     save_dataframe(olr_sst_df_file, df_data)
 
@@ -56,6 +57,8 @@ def save_sst_u200_to_df(day_start, day_end, u200_datafield, sst_datafield, u200_
     #(71 144) 
     sst_restricted_arr = sst_fill_nans(sst_restricted)
     time_restricted_long = make_time_for_dataset(time_restricted, spatial_elements_amount)
+    print(len(u200_datafield.u200.flatten()), len(sst_restricted_arr), len(time_restricted_long))
+    # exit()
     df_data = {"day": time_restricted_long, "sst": sst_restricted_arr, "u200": u200_datafield.u200.flatten()}
     save_dataframe(u200_sst_df_file, df_data)
     
