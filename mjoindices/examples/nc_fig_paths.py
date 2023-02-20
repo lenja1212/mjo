@@ -101,7 +101,7 @@
 
 
 ######90 day files 
-ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-del_15_lpd15-anomf-2015.nc' # 210
+ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anom_timemean-2015.nc' # 210
 # ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anomf-2015.nc' # 210
 # ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anom-2015.nc' # - (climatology  and 3lp of climatology)
 # ncfile_olr_path = '../tests/testdata/era5-olr-2p5grid-2015.nc' #Bare data
@@ -111,7 +111,7 @@ ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-del_15_lpd
 # ncfile_olr_path = '../tests/testdata/1991-2019_2p5grid/Dec.30/erfclim.181230.ensmean-radtt-anom-2p5grid.nc' # plav
 # ncfile_olr_path = '../tests131230/testdata/plv-olr-anom-day-2p5-2015.nc'
 
-ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-del_15_lpd15-anomf-2015.nc'
+ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anom_timemean-2015.nc'
 # ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anomf-2015.nc'
 # ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anom-2015.nc' # - (climatology  and 3lp of climatology)
 # ncfile_u200_path = '../tests/testdata/era5-u200hpa-2p5grid-2015.nc' # Bare data
@@ -121,7 +121,7 @@ ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-del_1
 # ncfile_u200_path = '../tests/testdata/1991-2019_2p5grid/Dec.30/erfclim.181230.ensmean-u200-anom-2p5grid.nc' # plav
 # ncfile_u200_path = '../tests/testdata/our-u200hpa-anom-day-2p5-2015-f3lp.nc'
 
-ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-del_15_lpd15-anomf-2015.nc'
+ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-anom_timemean-2015.nc'
 # ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-anomf-2015.nc'
 # ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-anom-2015.nc' # - (climatology  and 3lp of climatology)
 # ncfile_u850_path = '../tests/testdata/era5-u850hpa-2p5grid-2015.nc' # Bare data

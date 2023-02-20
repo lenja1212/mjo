@@ -23,7 +23,7 @@ from eofs.standard import Eof
 start_time = time.time()
 
 #TODO path+name, make file wit all paths to nc,  dependence on name, cmp7ppc for short olr 
-# cut sst from everywhere
+# cut sst from everywhere, only interpolation is needed now
 
 #1993-, 2004+, 2006, 2018 '../tests/testdata/1991-2019_2p5grid/Dec.30/'
 
@@ -83,14 +83,14 @@ df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200")
 df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850")
 #****** Calculate normalization factor  *******#
 
-variance_olr = np.std(df_sst_olr)
-variance_u200 = np.std(df_sst_u200)
-variance_u850 = np.std(df_sst_u850)
+# variance_olr = np.std(df_sst_olr)
+# variance_u200 = np.std(df_sst_u200)
+# variance_u850 = np.std(df_sst_u850)
 
-#factors from article
-# variance_olr = 15.1 
-# variance_u200 = 4.81 
-# variance_u850 = 1.81
+### factors from article
+variance_olr = 15.1 
+variance_u200 = 4.81 
+variance_u850 = 1.81
 
 #********************************************#
 print("variance_olr: ",variance_olr, " variance_u200: ", variance_u200, " variance_u850: ", variance_u850)
