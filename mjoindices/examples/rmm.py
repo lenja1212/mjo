@@ -83,14 +83,14 @@ df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200")
 df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850")
 #****** Calculate normalization factor  *******#
 
-# variance_olr = np.std(df_sst_olr)
-# variance_u200 = np.std(df_sst_u200)
-# variance_u850 = np.std(df_sst_u850)
+variance_olr = np.std(df_sst_olr)
+variance_u200 = np.std(df_sst_u200)
+variance_u850 = np.std(df_sst_u850)
 
 ### factors from article
-variance_olr = 15.1 
-variance_u200 = 4.81 
-variance_u850 = 1.81
+# variance_olr = 15.1 
+# variance_u200 = 4.81 
+# variance_u850 = 1.81
 
 #********************************************#
 print("variance_olr: ",variance_olr, " variance_u200: ", variance_u200, " variance_u850: ", variance_u850)

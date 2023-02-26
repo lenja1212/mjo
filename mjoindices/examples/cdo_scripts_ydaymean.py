@@ -15,55 +15,66 @@ mv era5-u850hpa-day-2p5grid-clim_ydaymean.nc ./anomalies_all_years/
 
 #Same for all years and there is only one year
 # cdo selyear,2021 ./anomalies_all_years/era5-olr-day-2p5grid-clim.nc      ./anomalies_all_years/era5-olr-day-2p5grid-clim-2015.nc
-#################### 1 subtract time mean  [data -clim]
-cdo ydaysub era5-olr-day-2p5grid.nc      ./anomalies_all_years/era5-olr-day-2p5grid-clim.nc      ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm.nc    
-cdo ydaysub era5-u200hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-clim.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm.nc
-cdo ydaysub era5-u850hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-clim.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm.nc 
+#################### 1 subtract time mean  [data - clim]
+cdo ydaysub era5-olr-day-2p5grid.nc      ./anomalies_all_years/era5-olr-day-2p5grid-clim_ydaymean.nc      ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm.nc    
+cdo ydaysub era5-u200hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-clim_ydaymean.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm.nc
+cdo ydaysub era5-u850hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-clim_ydaymean.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm.nc 
 ##############1
 
-#################### 2 find first three harmonics (from data over all years) [first three harmonis (data)]
+#################### 2.1 find first three harmonics (from data over all years) ; [first three harmonis (data)]
 cdo lowpass,3 -del29feb era5-olr-day-2p5grid.nc       ./anomalies_all_years/era5-olr-day-2p5grid-03lp.nc  
 cdo lowpass,3 -del29feb era5-u200hpa-day-2p5grid.nc   ./anomalies_all_years/era5-u200hpa-day-2p5grid-03lp.nc
 cdo lowpass,3 -del29feb era5-u850hpa-day-2p5grid.nc   ./anomalies_all_years/era5-u850hpa-day-2p5grid-03lp.nc
-##############2
-#################### 2 find first three harmonics (from clim) (smooth climatology) [first three harmonis (clim)]  GOOD
+##############2.1
+#################### 2.2 find first three harmonics (from clim) (smooth climatology) ; [first three harmonis (clim)]  GOOD
 cdo lowpass,3 -del29feb ./anomalies_all_years/era5-olr-day-2p5grid-clim_ydaymean.nc      ./anomalies_all_years/era5-olr-day-2p5grid-clim_ydaymean-03lp.nc 
 cdo lowpass,3 -del29feb ./anomalies_all_years/era5-u200hpa-day-2p5grid-clim_ydaymean.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-clim_ydaymean-03lp.nc 
 cdo lowpass,3 -del29feb ./anomalies_all_years/era5-u850hpa-day-2p5grid-clim_ydaymean.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-clim_ydaymean-03lp.nc
-##############2
-#################### 2 find first three harmonics (from [data - clim] over all years) GOOD
+##############2.2
+#################### 2.3 find first three harmonics (from [data - clim] over all years) ; [first three harmonis (data - clim)]  GOOD
 cdo lowpass,3 -del29feb ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm.nc      ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm-03lp.nc  
 cdo lowpass,3 -del29feb ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm-03lp.nc
 cdo lowpass,3 -del29feb ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm-03lp.nc
-##############2
+##############2.3
 
-#################### 3.1 subtract {[data - clim] - [first three harmonis (data)]}  //= strange result of subtraction (olr 150-400)
+# #### TEST 
+# cdo selyear,2015 selyear,2015 era5-olr-day-2p5grid.nc ./ncfiles2015/era5-olr-day-2p5grid-2015.nc 
+# cdo ydaymean 
+# cdo lowpass,3  ./anomalies_all_years/teat-clim-2015.nc ./anomalies_all_years/teat-clim-03lp-2015.nc
+
+# cdo selyear,2015 ./anomalies_all_years/era5-olr-day-2p5grid-clim_ydaymean-03lp.nc ./anomalies_all_years/test2-clim-2015.nc
+# cdo sub ./anomalies_all_years/teat-clim-03lp-2015.nc ./anomalies_all_years/test2-clim-2015.nc ./anomalies_all_years/test-res.n
+# #####
+
+#################### 3.1 1 - 2.1 subtract {[data - clim] - [first three harmonis (data)]}  //= strange result of subtraction (olr 150-400)
 cdo sub ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm.nc      ./anomalies_all_years/era5-olr-day-2p5grid-03lp.nc      ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm_03lp.nc 
 cdo sub ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-03lp.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm_03lp.nc
 cdo sub ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-03lp.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm_03lp.nc 
 ##############3.1
-#################### 3.2 subtract {[data - clim] - [first three harmonis (clim)]} //= strange result in step 3 (olr 150-400)
+#################### 3.2 1 - 2.2 subtract {[data - clim] - [first three harmonis (clim)]} //= strange result in step 3 (olr 150-400)  
 cdo sub ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm.nc      ./anomalies_all_years/era5-olr-day-2p5grid-clim_ydaymean-03lp.nc      ./anomalies_all_years/era5-olr-day-2p5grid-datclim_sub_ftcl.nc 
 cdo sub ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-clim_ydaymean-03lp.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-datclim_sub_ftcl.nc
 cdo sub ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-clim_ydaymean-03lp.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-datclim_sub_ftcl.nc 
 ##############3.2
-#################### 3.3 subtract {[data - first three harmonis (clim)]}  !!! GOOD  near zero 
+#################### 3.3 data - 2.2 subtract {[data - [first three harmonis (clim)]}  !!! GOOD  near zero 
 cdo sub era5-olr-day-2p5grid.nc      ./anomalies_all_years/era5-olr-day-2p5grid-clim_ydaymean-03lp.nc      ./anomalies_all_years/era5-olr-day-2p5grid-data_sub_ftcl.nc 
 cdo sub era5-u200hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-clim_ydaymean-03lp.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-data_sub_ftcl.nc 
 cdo sub era5-u850hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-clim_ydaymean-03lp.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-data_sub_ftcl.nc 
 ##############3.3 check for sub (not ydaysub -del29feb ) !same
-#################### 3.4 subtract {[data - first three harmonis [data - clim]]} !!! GODD as ftcl but near -250
+#################### 3.4 data -  2.3 {[data - [first three harmonis (data - clim)]} !!! GODD as ftcl but near -250
 cdo sub era5-olr-day-2p5grid.nc      ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm-03lp.nc      ./anomalies_all_years/era5-olr-day-2p5grid-data_sub_ftdtcl.nc 
 cdo sub era5-u200hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm-03lp.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-data_sub_ftdtcl.nc 
 cdo sub era5-u850hpa-day-2p5grid.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm-03lp.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-data_sub_ftdtcl.nc  
 ##############3.4
-#################### 3.5 subtract {[data - clim] - first three harmonis [data - clim]]} !!! GOOD  near zero (not equal 3.3)
+#################### 3.5 1 - 2.3 subtract {[data - clim] - first three harmonis [data - clim]]} !!! GOOD  near zero (not equal 3.3)  
 cdo sub ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm.nc      ./anomalies_all_years/era5-olr-day-2p5grid-subt_ydm-03lp.nc      ./anomalies_all_years/era5-olr-day-2p5grid-datclim_sub_ftdtcl.nc
 cdo sub ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-subt_ydm-03lp.nc  ./anomalies_all_years/era5-u200hpa-day-2p5grid-datclim_sub_ftdtcl.nc
 cdo sub ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-subt_ydm-03lp.nc  ./anomalies_all_years/era5-u850hpa-day-2p5grid-datclim_sub_ftdtcl.nc
 ##############3.5
 
-# TOTAL: 3.3, 3.5, 3.4, (3.2, 3,1)  (3.3 - like in skript)
+
+# TODO
+# TOTAL: 3.3, 3.5, (3.4, 3.2, 3,1)  (3.3 - like in skript) (...) ->check later
 
 #################### 4.1  Get data 01.01.2015 - 28.03.2015 from 3.3 
 cdo seldate,2015-01-01,2015-03-28  ./anomalies_all_years/era5-olr-day-2p5grid-data_sub_ftcl.nc       ./ncfiles2015/era5-olr-88day-2p5grid-data_sub_ftcl-2015.nc 
@@ -221,10 +232,4 @@ cdo sub ./ncfiles2015/era5-u200hpa-88day-2p5grid-datclim_sub_ftdtcl-2015.nc  ./n
 cdo sub ./ncfiles2015/era5-u850hpa-88day-2p5grid-datclim_sub_ftdtcl-2015.nc  ./ncfiles2015/era5-u850hpa-90day_rm-2p5grid-data-datclim_sub_ftdtcl-2015.nc  ./ncfiles2015/era5-u850hpa-88day-2p5grid-datclim_sub_ftdtcl-anom812-2015.nc
 ##############8.12
 
-
-#################### 5 
-
-##############5
-#################### 1
-##############1
-
+#Sybresult 8.3, 8.6, 8.9, 8.12 - not good (5.3)

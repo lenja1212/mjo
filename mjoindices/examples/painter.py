@@ -87,7 +87,7 @@ def drawPc(pc_text_file: Path, pc_png_file: Path, inverse1 = 1, inverse2 = 1):
         plt.annotate(text31[i], (rotated_data[:,0][i], rotated_data[:,1][i] + 0.2), fontsize=5)
     plt.annotate("FINISH", (mar_arr_pc1[-1], mar_arr_pc2[-1] + 0.2), fontsize=8)
     plt.legend()
-
+    print("coordinate of the las point:", mar_arr_pc1[-1], mar_arr_pc2[-1])
     #add Circle
     circle1 = plt.Circle((0, 0), 1, color='k', fill=False, linewidth=1)
     ax.plot([0, 1], [0, 1], transform=ax.transAxes, color='k', linewidth = 0.5, ls="--" )
@@ -102,3 +102,5 @@ def drawPc(pc_text_file: Path, pc_png_file: Path, inverse1 = 1, inverse2 = 1):
         os.makedirs(pc_png_file)
     fig_name = os.path.basename(pc_png_file)
     plt.savefig(f'{pc_png_file}/{fig_name}_{inverse1}_{inverse2}.png')
+    plt.close()
+

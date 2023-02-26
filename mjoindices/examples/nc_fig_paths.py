@@ -97,11 +97,9 @@
 # era5-200hpa-day-2p5grid.nc
 # era5-u850hpa-day-2p5grid.nc
 
-
-
-
+anom_num ='anom828'
 ######90 day files 
-ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anom_timemean-2015.nc' # 210
+ncfile_olr_path = f'../tests/testdata/ncfiles2015/era5-olr-88day-2p5grid-ydmyear-{anom_num}-2015.nc' # 210
 # ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anomf-2015.nc' # 210
 # ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anom-2015.nc' # - (climatology  and 3lp of climatology)
 # ncfile_olr_path = '../tests/testdata/era5-olr-2p5grid-2015.nc' #Bare data
@@ -111,7 +109,7 @@ ncfile_olr_path = '../tests/testdata/ncfiles2015/era5-olr-day-2p5grid-anom_timem
 # ncfile_olr_path = '../tests/testdata/1991-2019_2p5grid/Dec.30/erfclim.181230.ensmean-radtt-anom-2p5grid.nc' # plav
 # ncfile_olr_path = '../tests131230/testdata/plv-olr-anom-day-2p5-2015.nc'
 
-ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anom_timemean-2015.nc'
+ncfile_u200_path = f'../tests/testdata/ncfiles2015/era5-u200hpa-88day-2p5grid-ydmyear-{anom_num}-2015.nc'
 # ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anomf-2015.nc'
 # ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anom-2015.nc' # - (climatology  and 3lp of climatology)
 # ncfile_u200_path = '../tests/testdata/era5-u200hpa-2p5grid-2015.nc' # Bare data
@@ -121,7 +119,7 @@ ncfile_u200_path = '../tests/testdata/ncfiles2015/era5-u200hpa-day-2p5grid-anom_
 # ncfile_u200_path = '../tests/testdata/1991-2019_2p5grid/Dec.30/erfclim.181230.ensmean-u200-anom-2p5grid.nc' # plav
 # ncfile_u200_path = '../tests/testdata/our-u200hpa-anom-day-2p5-2015-f3lp.nc'
 
-ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-anom_timemean-2015.nc'
+ncfile_u850_path = f'../tests/testdata/ncfiles2015/era5-u850hpa-88day-2p5grid-ydmyear-{anom_num}-2015.nc'
 # ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-anomf-2015.nc'
 # ncfile_u850_path = '../tests/testdata/ncfiles2015/era5-u850hpa-day-2p5grid-anom-2015.nc' # - (climatology  and 3lp of climatology)
 # ncfile_u850_path = '../tests/testdata/era5-u850hpa-2p5grid-2015.nc' # Bare data
@@ -165,8 +163,14 @@ olr_sst_120_df_file = 'example_data/dataframes/day_sst_olr_120.txt'
 u200_sst_120_df_file = 'example_data/dataframes/day_sst_u200_120.txt'
 u850_sst_120_df_file = 'example_data/dataframes/day_sst_u850_120.txt'
 
-pctxtfile = 'example_data/PC/PCs-JFM-2.5_anomf_del_15_lpd15-anom-15' #PCs2-JFM-2.5_full2_aver2_NOsst_15-HP
-pcstxtfile = 'example_data/PCs/PsCs-JFM-2.5_anomf_del_15_lpd15-anomf-15' #PsCs-JFM-2.5_full2_aver2_NOsst_-HP2
+# pc_name = "calc-normfac-8.12-15"  #cdo_script_yadaymean
+# pc_name = "calc-normfac-tm-8.01-15" #cdo_script_timemean
+# pc_name = f'calc-normfac-ytm-{anom_num}-15' #cdo_script_timemean_year
+pc_name = f'calc-normfac-ydm-{anom_num}-15' #cdo_script_yadaymean_year
+# pc_name = f'calc-normfac-ydm_data-{anom_num}-15' #cdo_script_yadaymean_year only120
 
-pc_png_file = 'example_data/Graphs/PCs-JFM-2.5_anomf_del_15_lpd15-anomf-15'
-psc_png_file = 'example_data/Graphs/PsCs-JFM-2.5_anomf_del_15_lpd15-anomf-15'
+pctxtfile = f'example_data/PC/PCs-JFM-2.5_{pc_name}' #PCs2-JFM-2.5_full2_aver2_NOsst_15-HP
+pcstxtfile = f'example_data/PCs/PsCs-JFM-2.5_{pc_name}' #PsCs-JFM-2.5_full2_aver2_NOsst_-HP2
+
+pc_png_file = f'example_data/Graphs/PCs-JFM-2.5_{pc_name}'
+psc_png_file = f'example_data/Graphs/PsCs-JFM-2.5_{pc_name}'
