@@ -54,92 +54,187 @@ day_end_120 = day_start - np.timedelta64(1, 'D')
 # u850_120_path = save_new_dataframe_120(u850_sst_120_df_file, "u850")
 #exit()
 #***************************************************************************#
+# day_start = np.datetime64("2012-01-01")
 day_start = np.datetime64("2015-01-01") # runmean
 day_end = day_start + np.timedelta64(86, 'D') #runmean
+# day_end = day_start + np.timedelta64(30, 'D') #runmean
 
-shorter_olr = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_path, day_start, day_end, plav=False) #True
-shorter_u200 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_path, day_start, day_end, plav=False)
-shorter_u850 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_path, day_start, day_end, plav=False)
-shorter_sst = sst.load_noaa_interpolated_sst_netcdf4(ncfile_sst_path, day_start, day_end)
 
-interpolated_olr = olr.interpolate_spatial_grid_to_original(shorter_olr)
-interpolated_u200 = u200.interpolate_spatial_grid_to_original(shorter_u200)
-interpolated_u850 = u850.interpolate_spatial_grid_to_original(shorter_u850)
-interpolated_sst = sst.interpolate_spatial_grid_to_original(shorter_sst)
+# shorter_olr = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_path, day_start, day_end, plav=False) #True
+# shorter_u200 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_path, day_start, day_end, plav=False)
+# shorter_u850 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_path, day_start, day_end, plav=False)
+# shorter_sst = sst.load_noaa_interpolated_sst_netcdf4(ncfile_sst_path, day_start, day_end)
 
-#******  Make DataFile from nc files  *******#
-save_sst_olr_to_df(day_start, day_end, interpolated_olr, interpolated_sst, olr_sst_df_file)
-save_sst_u200_to_df(day_start, day_end, interpolated_u200, interpolated_sst, u200_sst_df_file)
-save_sst_u850_to_df(day_start, day_end, interpolated_u850, interpolated_sst, u850_sst_df_file)
-#*********** If 120 days before forecast are needed aver2 aver3 **************#
-#aver 2, 3
-# df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr", olr_120_path)
-# df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200", u200_120_path)
-# df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850", u850_120_path)
+# interpolated_olr = olr.interpolate_spatial_grid_to_original(shorter_olr)
+# interpolated_u200 = u200.interpolate_spatial_grid_to_original(shorter_u200)
+# interpolated_u850 = u850.interpolate_spatial_grid_to_original(shorter_u850)
+# interpolated_sst = sst.interpolate_spatial_grid_to_original(shorter_sst)
 
-#aver 
-df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr")
-df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200")
-df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850")
+# #******  Make DataFile from nc files  *******#
+# save_sst_olr_to_df(day_start, day_end, interpolated_olr, interpolated_sst, olr_sst_df_file)
+# save_sst_u200_to_df(day_start, day_end, interpolated_u200, interpolated_sst, u200_sst_df_file)
+# save_sst_u850_to_df(day_start, day_end, interpolated_u850, interpolated_sst, u850_sst_df_file)
+# #*********** If 120 days before forecast are needed aver2 aver3 **************#
+# #aver 2, 3
+# # df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr", olr_120_path)
+# # df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200", u200_120_path)
+# # df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850", u850_120_path)
+
+# #aver 
+# df_sst_olr = get_new_dataframe(olr_sst_df_file, "olr")
+# df_sst_u200 = get_new_dataframe(u200_sst_df_file, "u200")
+# df_sst_u850 = get_new_dataframe(u850_sst_df_file, "u850")
+
+#aver by cdo 
+f = netcdf4.Dataset(ncfile_olr_path, "r")
+df_sst_olr = np.array(f.variables['olr'])
+print("len all olr: ", (df_sst_olr.shape))
+f = netcdf4.Dataset(ncfile_u200_path, "r")
+df_sst_u200 = np.array(f.variables['u'])
+print("len all u200: ", (df_sst_u200.shape))
+f = netcdf4.Dataset(ncfile_u850_path, "r")
+df_sst_u850 = np.array(f.variables['u'])
+print("len all u850: ", (df_sst_u850.shape))
+
+f = netcdf4.Dataset(ncfile_olr_all_path, "r")
+df_olr_all  = np.array(f.variables['olr'])
+print("len all olr: ", (df_olr_all.shape))
+f = netcdf4.Dataset(ncfile_u200_all_path, "r")
+df_u200_all = np.array(f.variables['u'])
+print("len all u200: ", (df_u200_all.shape))
+f = netcdf4.Dataset(ncfile_u850_all_path, "r")
+df_u850_all = np.array(f.variables['u'])
+print("len all u850: ", (df_u850_all.shape))
 #****** Calculate normalization factor  *******#
 
-variance_olr = np.std(df_sst_olr)
-variance_u200 = np.std(df_sst_u200)
-variance_u850 = np.std(df_sst_u850)
 
-### factors from article
-# variance_olr = 15.1 
-# variance_u200 = 4.81 
-# variance_u850 = 1.81
+# factors from article
+variance_olr  =  15.1
+variance_u200 =  4.81 
+variance_u850 =  1.81
+# variance_olr  =  3.1
+# variance_u200 =  3.81 
+# variance_u850 =  1.81
+variance_olr_all =  15.1 
+variance_u200_all = 4.81 
+variance_u850_all = 1.81
+
+# variance_olr = np.std(df_sst_olr)
+# variance_u200 = np.std(df_sst_u200)
+# variance_u850 = np.std(df_sst_u850)
+# # #facotrs std for all
+# variance_olr_all = np.std(df_olr_all)
+# variance_u200_all = np.std(df_u200_all)
+# variance_u850_all = np.std(df_u850_all)
+
 
 #********************************************#
-print("variance_olr: ",variance_olr, " variance_u200: ", variance_u200, " variance_u850: ", variance_u850)
+print("variance_olr: ",variance_olr, " variance_u200: ", variance_u200, " variance_u850: ", variance_u850, "\n")
+print("variance_olr_all: ",variance_olr_all, " variance_u200_all: ", variance_u200_all, " variance_u850_all: ", variance_u850_all, "\n")
+
+print(df_olr_all.shape, df_u200_all.shape, df_u850_all.shape)
 #******  Find PC  ******#
 # solver = MultivariateEof([df_sst_olr, df_sst_u200, df_sst_u850])
-solver = MultivariateEof([df_sst_olr/variance_olr, df_sst_u200/variance_u200, df_sst_u850/variance_u850], center=True) # OK
-# solver = MultivariateEof([interpolated_olr.olr / variance_olr, interpolated_u200.u200 / variance_u200, interpolated_u850.u850 / variance_u850]) # not ok
-pcs = np.squeeze(solver.pcs(npcs=2, pcscaling=1))
+# solver = MultivariateEof([df_olr_all, df_u200_all, df_u850_all])
+# solver = MultivariateEof([df_sst_olr/variance_olr, df_sst_u200/variance_u200, df_sst_u850/variance_u850], center=True) # OK
+# solver = MultivariateEof([df_sst_olr/variance_olr_all, df_sst_u850/variance_u200_all, df_sst_u850/variance_u850_all], center=True)
+solver = MultivariateEof([df_olr_all/variance_olr_all, df_u850_all/variance_u850_all, df_u200_all/variance_u200_all], center=True)
 
-pc1, pc2 = [], []
-for pc in pcs:
-    pc1.append(pc[0])
-    pc2.append(pc[1]) 
-dates = np.arange(day_start, day_end + np.timedelta64(1, 'D'), dtype='datetime64[D]')
-df = pd.DataFrame({"Date": dates, "PC1": pc1, "PC2": pc2})
-df.to_csv(f'{pctxtfile}.txt', index=False, float_format="%.5f")
+total_variance = solver.totalAnomalyVariance()
+print("total_variance: ", total_variance)
+weights_list = solver.getWeights()
+print("weights_list: ", weights_list)
+eigenvalue1, eigenvalue2, eigenvalue3, eigenvalue4 = solver.eigenvalues(neigs=4)
+print("eigenvalue1: ", eigenvalue1)
+print("eigenvalue2: ", eigenvalue2)
 
-pseudo_pcs = np.squeeze(solver.projectField([df_sst_olr/variance_olr, df_sst_u200/variance_u200, df_sst_u850/variance_u850], eofscaling=1, neofs=2))
+##### !!! for WH04 _setEofWH04 in both standard.py
+#7.445 7.255
+eof1_list = solver.eofs(neofs=2, eofscaling=0)
+file = open('eofs.txt','w')
+for item in eof1_list:
+    file.write(f'{item} \n')
+file.close()
+# exit()
+print(np.array(eof1_list[0]).shape)
+
+# pcs = np.squeeze(solver.pcs(npcs=2, pcscaling=1))
+# pc1, pc2 = [], []
+# for pc in pcs:
+#     pc1.append(pc[0])
+#     pc2.append(pc[1]) 
+# dates = np.arange(day_start, day_end + np.timedelta64(1, 'D'), dtype='datetime64[D]')
+# df = pd.DataFrame({"Date": dates, "PC1": pc1, "PC2": pc2})
+# df.to_csv(f'{pctxtfile}.txt', index=False, float_format="%.5f")
+
+#TODO 
+###################################################### restore fields wrom WH04
+reconstruction_list = solver.reconstructedField(2) #2 because only 2 EOFS of WH04
+# print(reconstruction_list)
+print(np.array(reconstruction_list).shape)
+ncfile = netcdf4.Dataset('my_WH.V8-testsWH.nc',mode='w',format='NETCDF4_CLASSIC')
+lon_dim = ncfile.createDimension("lon", 144)
+lat_dim = ncfile.createDimension("lat", 1)
+time_dim = ncfile.createDimension("time", None)
+ncfile.title = "test ncfile"
+
+time = ncfile.createVariable('time', np.intc, ('time',))
+time.units = 'hours since 1900-01-01'
+time.long_name = 'time'
+time.standard_name = "time" 
+lon = ncfile.createVariable('lon', np.float64, ('lon',))
+lon.units = 'degrees_east'
+lon.long_name = 'longitude'
+lon.standard_name = "longitude" ;
+lat = ncfile.createVariable('lat', np.float64, ('lat',))
+lat.units = 'degrees_north'
+lat.long_name = 'latitude'
+lat.standard_name = "latitude" 
+olr = ncfile.createVariable('olr', np.float32, ('time', 'lat', 'lon'))
+olr.units = 'J m**-2'
+olr.long_name = 'Top net thermal radiation'
+olr.standard_name = "toa_outgoing_longwave_flux" 
+
+nlats = len(lat_dim); nlons = len(lon_dim);
+print(nlats, nlons)
+lon[:] = (2.5)*np.arange(nlons)
+lat[0] = 1
+time[:] = np.arange(695504, 894128, 24) #correct for 8395 days
+# time[:] = np.arange(695362, 1016820, 24) # V8
+# time[:] = np.arange(885916, 894128, 24)
+print("len_time: ", len(time))
+print(df_olr_all.shape)
+print(reconstruction_list[0].shape)
+olr[:] = np.array(reconstruction_list[0])
+
+# exit()
+###################################################### END restore fields wrom WH04
+# find correct amplitudes
+# find correct norm factors
+
+
+
+# pseudo_pcs = np.squeeze(solver.projectField([df_sst_olr/variance_olr_all, df_sst_u200/variance_u200_all, df_sst_u850/variance_u850_all], eofscaling=1, neofs=2, weighted=True))
+pseudo_pcs = np.squeeze(solver.projectField([-1*df_sst_olr/variance_olr, df_sst_u850/variance_u850, df_sst_u200/variance_u200], eofscaling=1, neofs=2, weighted=False)) # same as neofs=2
 psc1, psc2 = [], []
 for pc in pseudo_pcs:
-    psc1.append(pc[0])
-    psc2.append(pc[1]) 
-dates = np.arange(day_start, day_end + np.timedelta64(1, 'D'), dtype='datetime64[D]')
-df = pd.DataFrame({"Date": dates, "PC1": psc1, "PC2": psc2})
+    psc1.append(pc[0])#/7.445)
+    psc2.append(pc[1])#/7.255) 
+dates = np.arange(day_start, day_end + np.timedelta64(1, 'D'), dtype='datetime64[D]') # was 1, D
+print(len(dates), len(psc1), len(psc2))
+df = pd.DataFrame({"Date": dates, "PC1": psc1, "PC2": psc2}) #psc2/np.std(psc2)
 df.to_csv(f'{pcstxtfile}.txt', index=False, float_format="%.5f")
 
+# probably good
+# print("pc1_std: ", np.std(psc1))
+# print("pc2_std: ", np.std(psc2))
 #**********************#
 
 
-# #******  Delete Average  ******#
-# shorter_olr = olr.load_noaa_interpolated_olr_netcdf4(ncfile_olr_path, day_start, day_end)
-# anomaly_olr = olr.get_doys_in_span(shorter_olr, ncfile_olr_path, day_start, day_end)
-# interpolated_olr = olr.interpolate_spatial_grid_to_original(anomaly_olr)
-# print("--- %s seconds for one span ---" % (time.time() - start_time))
-
-# shorter_u200 = u200.load_noaa_interpolated_u200_netcdf4(ncfile_u200_path, day_start, day_end)
-# anomaly_u200 = u200.get_doys_in_span(shorter_u200, ncfile_u200_path, day_start, day_end)
-# interpolated_u200 = u200.interpolate_spatial_grid_to_original(anomaly_u200)
-
-# shorter_u850 = u850.load_noaa_interpolated_u850_netcdf4(ncfile_u850_path, day_start, day_end)
-# anomaly_u850 = u850.get_doys_in_span(shorter_u850, ncfile_u850_path, day_start, day_end)
-# interpolated_u850 = u850.interpolate_spatial_grid_to_original(anomaly_u850)
-# #******************************#
-# print(interpolated_olr.olr)
-# print(type(interpolated_olr.olr))
 # #******  Find PC  ******#
 # #solver = MultivariateEof([anomaly_olr.olr, anomaly_u200.u200, anomaly_u850.u850])
 # solver = MultivariateEof([interpolated_olr.olr, interpolated_u200.u200, interpolated_u850.u850])
-# pcs = np.squeeze(solver.pcs(npcs=2, pcscaling=1o))
+# pcs = np.squeeze(solver.pcs(npcs=2, pcscaling=1))
 
 # pc1, pc2 = [], []
 # for pc in pcs:
@@ -150,15 +245,14 @@ df.to_csv(f'{pcstxtfile}.txt', index=False, float_format="%.5f")
 # df.to_csv(f'{pctxtfile}.txt', index=False, float_format="%.5f")
 
 #**********************#
-
 #******  Draw PCS  ******#
 
 # pc_png_file = 'example_data/grapgs/PCs2-JFM-2.5_full2_aver2_NOsst_15-HP2.txt'
 
-drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', 1, 1)
-drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', 1, -1)
-drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', -1, 1)
-drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', -1, -1)
+# drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', 1, 1)
+# drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', 1, -1)
+# drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', -1, 1)
+# drawPc(f'{pctxtfile}.txt', f'{pc_png_file}', -1, -1)
 
 drawPc(f'{pcstxtfile}.txt', f'{psc_png_file}', 1, 1)
 drawPc(f'{pcstxtfile}.txt', f'{psc_png_file}', 1, -1)
@@ -167,4 +261,4 @@ drawPc(f'{pcstxtfile}.txt', f'{psc_png_file}', -1, -1)
 
 
 # #****************************#
-print("--- %s seconds totally ---" % (time.time() - start_time))
+# print("--- %s seconds totally ---" % (time.time() - start_time))

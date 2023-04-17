@@ -351,11 +351,15 @@ def make_array_for_eof(filename: Path, field_name, days, spatial_elements_amount
     
     field_arr = df[field_name].values
 
-    field_arr_d = np.array(np.array_split(field_arr, days))
+    field_arr_days = np.array(np.array_split(field_arr, days))
     field_arr_lat = []
-    for elem in field_arr_d:
+    print(df[field_name].values, "\n")
+    average_elem = []
+ # std = sqrt(mean(x)), where x = abs(a - a.mean())**2.
+       # average_elem.append(elem)#/np.std(elem)) 
+    for elem in field_arr_days:
         field_arr_lat.append(np.array(np.array_split(elem, spatial_elements_amount//144))) 
-    field_arr_lat_lon = np.array(field_arr_lat)
+        field_arr_lat_lon = np.array(field_arr_lat)
     #print("field_arr_lat_lon: ",field_arr_lat_lon)
 #average points over this latitude range:
     average_elem = []
@@ -386,8 +390,19 @@ def make_array_for_eof(filename: Path, field_name, days, spatial_elements_amount
     #exit()
     return np.nan_to_num(np.array(average_elem))
 
+    # return df[field_name].values
+    return 
+
     
 
 #93
 #71
 #144
+
+        # print("elem")
+        # print(elem)
+        # print("len of elem: ", len(elem))
+        # print(sum(elem)/len(elem))
+        
+        # # average_elem = sum(elem)/
+        # exit()
